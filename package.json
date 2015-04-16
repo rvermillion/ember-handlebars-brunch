@@ -1,6 +1,6 @@
 {
   "name": "ember-handlebars-brunch",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Adds pre-compiling support for Ember Handlebars templates to Brunch",
   "author": {
     "name": "Steve Bartnesky"
@@ -34,6 +34,10 @@
     {
       "name": "Matt Marcum",
       "email": "matt@strangelooper.com"
+    },
+    {
+      "name": "Richard Vermillion",
+      "email": "rvermillion@fulcrm.com"
     }
   ],
   "homepage": "https://github.com/bartsqueezy/ember-handlebars-brunch",
