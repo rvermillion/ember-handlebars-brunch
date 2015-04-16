@@ -1,16 +1,19 @@
 # https://gist.github.com/2013669
 
-module.exports = (->
+module.exports = ((emberTemplateCompiler) ->
 
   fs      = require 'fs'
   vm      = require 'vm'
   sysPath = require 'path'
+  logger  = require 'loggy'
 
-  compilerPath = sysPath.join __dirname, '..', 'node_modules/ember-template-compiler/vendor/', 'ember-template-compiler.js'
-  handlebarsPath = sysPath.join __dirname, '..', 'node_modules/handlebars/dist', 'handlebars.js'
+  if not emberTemplateCompiler?
+    emberTemplateCompiler = '../../bower_components/ember/ember-template-compiler.js'
 
+  compilerPath = sysPath.join __dirname, '..', emberTemplateCompiler
+
+  logger.info "Using compiler: #{compilerPath}"
   compilerjs   = fs.readFileSync compilerPath, 'utf8'
-  handlebarsjs   = fs.readFileSync handlebarsPath, 'utf8'
 
   # dummy DOM element
   element =
@@ -42,16 +45,19 @@ module.exports = (->
   # create a context for the vm using the sandbox data
   context = vm.createContext sandbox
 
+  context.module = {}
   # load ember-template-compiler in the vm to compile templates
-  vm.runInContext handlebarsjs, context, 'handlebarsjs'
   vm.runInContext compilerjs, context, 'compiler.js'
+
+  context.precompile = context.module.exports.precompile
+  delete context.module
 
   return (templateData)->
 
     context.template = templateData
 
     # compile the handlebars template inside the vm context
-    vm.runInContext 'templatejs = exports.precompile(template).toString();', context
+    vm.runInContext 'templatejs = precompile(template).toString();', context
 
     context.templatejs;
-)()
+)

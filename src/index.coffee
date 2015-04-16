@@ -7,6 +7,7 @@ module.exports = class EmberHandlebarsCompiler
   extension: 'hbs'
   precompile: off
   root: null
+  compilerPath: '../../bower_components/ember/ember-template-compiler.js'
   modulesPrefix: 'module.exports = '
 
   constructor: (@config) ->
@@ -18,6 +19,11 @@ module.exports = class EmberHandlebarsCompiler
       @modulesPrefix = ''
     if @config.files.templates.defaultExtension?
       @extension = @config.files.templates.defaultExtension
+    if @config.files.templates.compilerPath?
+      @compilerPath = @config.files.templates.compilerPath
+
+    @compiler = compileHBS(@compilerPath)
+
     null
 
   compile: (data, path, callback) ->
@@ -27,7 +33,7 @@ module.exports = class EmberHandlebarsCompiler
       tmplPath = tmplPath.substr 0, tmplPath.length - sysPath.extname(tmplPath).length
       tmplName = "Ember.TEMPLATES['#{tmplPath}']"
       if @precompile is on
-        content = compileHBS data.toString()
+        content = @compiler(data.toString())
         result = "#{@modulesPrefix}#{tmplName} = Ember.Handlebars.template(#{content});"
       else
         content = JSON.stringify data.toString()
