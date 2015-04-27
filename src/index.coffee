@@ -7,14 +7,17 @@ module.exports = class EmberHandlebarsCompiler
   extension: 'hbs'
   precompile: off
   root: null
+  appDir: 'app'
   compilerPath: '../../bower_components/ember/ember-template-compiler.js'
   modulesPrefix: 'module.exports = '
 
   constructor: (@config) ->
     if @config.files.templates.precompile is on
       @precompile = on
+    if @config.files.templates.appDir?
+      @appDir = @config.files.templates.appDir
     if @config.files.templates.root?
-      @root = sysPath.join 'app', @config.files.templates.root, sysPath.sep
+      @root = sysPath.join @appDir, @config.files.templates.root, sysPath.sep
     if @config.modules.wrapper is off
       @modulesPrefix = ''
     if @config.files.templates.defaultExtension?
