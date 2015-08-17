@@ -26,6 +26,10 @@ module.exports = ((emberTemplateCompiler) ->
       createRange: false
       createElement: -> element
 
+    # ember 1.13 requires a navigator object
+    navigator:
+      userAgent: "Brunch (precompile)"
+
     # Console
     console: console
 

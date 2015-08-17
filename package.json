@@ -1,6 +1,6 @@
 {
   "name": "ember-handlebars-brunch",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Adds pre-compiling support for Ember Handlebars templates to Brunch",
   "author": {
     "name": "Steve Bartnesky"
