@@ -46,6 +46,8 @@ module.exports = ((emberTemplateCompiler) ->
   # window
   sandbox.window = sandbox
 
+  sandbox.global = sandbox
+
   # create a context for the vm using the sandbox data
   context = vm.createContext sandbox
 
