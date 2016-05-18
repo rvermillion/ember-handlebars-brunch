@@ -1,13 +1,20 @@
 'use strict';
 
 var exec = require('child_process').exec;
+var fs = require('fs');
 var sysPath = require('path');
 
 var mode = process.argv[2];
 
 var execute = function(pathParts, params, callback) {
   if (callback == null) callback = function() {};
+  //var path = fs.realpathSync(sysPath.join.apply(null, pathParts));
   var path = sysPath.join.apply(null, pathParts);
+  while (!fs.existsSync(path)) {
+    console.log('Could not find', path);
+    path = "../../" + path;
+  }
+  console.log('Found', path);
   var command = 'node ' + path + ' ' + params;
   console.log('Executing', command);
   exec(command, function(error, stdout, stderr) {
